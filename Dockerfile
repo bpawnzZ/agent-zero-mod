@@ -24,20 +24,20 @@ RUN mkdir -p /a0 && \
     find /a0 -type f -exec chmod 0664 {} +
 
 # pre installation steps
-RUN bash /ins/pre_install.sh $BRANCH
+RUN bash /a0/fs/ins/pre_install.sh $BRANCH
 
 # install additional software
-RUN bash /ins/install_additional.sh $BRANCH
+RUN bash /a0/fs/ins/install_additional.sh $BRANCH
 
 # install A0
-RUN bash /ins/install_A0.sh $BRANCH
+RUN bash /a0/fs/ins/install_A0.sh $BRANCH
 
 # cleanup repo and install A0 without caching, this speeds up builds
 ARG CACHE_DATE=none
-RUN echo "cache buster $CACHE_DATE" && bash /ins/install_A02.sh $BRANCH
+RUN echo "cache buster $CACHE_DATE" && bash /a0/fs/ins/install_A02.sh $BRANCH
 
 # post installation steps
-RUN bash /ins/post_install.sh $BRANCH
+RUN bash /a0/fs/ins/post_install.sh $BRANCH
 
 # Install gosu, sudo and configure temp directories
 RUN apt-get update && apt-get install -y gosu sudo && \
