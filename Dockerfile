@@ -21,6 +21,9 @@ RUN mkdir -p /a0 && \
     find /a0 -type d -exec chmod 2775 {} + && \
     find /a0 -type f -exec chmod 0664 {} +
 
+RUN mkdir -p /exe
+    find /a0 -type f -exec chmod 0664 {} +
+
 # pre installation steps
 RUN bash /ins/pre_install.sh $BRANCH
 
