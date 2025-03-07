@@ -11,17 +11,28 @@ ENV BRANCH=$BRANCH
 # Copy contents of the project to /a0
 COPY docker/run/fs/ /a0/fs/
 
-# Create /a0 if missing and set permissions
-RUN mkdir -p /exe && \
-    mkdir -p /a0 && \
-    groupadd -g ${GROUP_ID} agent && \
-    useradd -u ${USER_ID} -g ${GROUP_ID} -d /home/agent -m agent && \
-    mkdir -p /home/agent/.ssh && \
-    chmod 700 /home/agent/.ssh && \
-    chown -R agent:agent /a0 /exe /home/agent/.ssh && \
-    find /a0 -type d -exec chmod 2775 {} + && \
-    find /a0 -type f -exec chmod 0664 {} + && \
-    :
+# Create /exe directory
+RUN echo "Creating /exe directory" && mkdir -p /exe
+
+# Create /a0 if missing
+RUN echo "Creating /a0 directory" && mkdir -p /a0
+
+# Create agent group
+RUN echo "Creating agent group" && groupadd -g ${GROUP_ID} agent
+
+# Create agent user
+RUN echo "Creating agent user" && useradd -u ${USER_ID} -g ${GROUP_ID} -d /home/agent -m agent
+
+# Create .ssh directory for agent
+RUN echo "Creating /home/agent/.ssh directory" && mkdir -p /home/agent/.ssh
+RUN echo "Setting permissions for /home/agent/.ssh directory" && chmod 700 /home/agent/.ssh
+
+# Change ownership of directories
+RUN echo "Changing ownership of /a0, /exe, /home/agent/.ssh to agent:agent" && chown -R agent:agent /a0 /exe /home/agent/.ssh
+
+# Set permissions for /a0
+RUN echo "Setting directory permissions for /a0" && find /a0 -type d -exec chmod 2775 {} +
+RUN echo "Setting file permissions for /a0" && find /a0 -type f -exec chmod 0664 {} +
 
 # pre installation steps
 RUN bash /a0/fs/ins/pre_install.sh $BRANCH
