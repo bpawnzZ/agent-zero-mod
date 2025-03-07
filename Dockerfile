@@ -9,7 +9,7 @@ RUN if [ -z "$BRANCH" ]; then echo "ERROR: BRANCH is not set!" >&2; exit 1; fi
 ENV BRANCH=$BRANCH
 
 # Copy contents of the project to /a0
-COPY fs/ /
+COPY fs/ /a0/fs/
 
 # Create /a0 if missing and set permissions
 RUN mkdir -p /a0 && \
@@ -50,4 +50,4 @@ RUN apt-get update && apt-get install -y gosu sudo && \
 EXPOSE 22 80
 
 # initialize runtime
-CMD ["/bin/bash", "-c", "/bin/bash /exe/initialize.sh $BRANCH"]
+CMD ["/bin/bash", "/exe/initialize.sh", "$BRANCH"]
