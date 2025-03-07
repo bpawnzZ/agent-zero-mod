@@ -1,0 +1,5 @@
+.aider*
+work_dir_bak
+work_dir_bak/.cache
+work_dir/.cache
+work_dir/.local

@@ -1,0 +1,38 @@
+# local image with smart cache
+docker build -t agent-zero-run:local --build-arg BRANCH=development --build-arg CACHE_DATE=$(date +%Y-%m-%d:%H:%M:%S)  .
+
+# local image without cache
+docker build -t agent-zero-run:local --build-arg BRANCH=development --no-cache  .
+
+# dockerhub push:
+
+docker login
+
+# development:
+docker buildx build --build-arg BRANCH=development \
+  --build-arg USER_ID=1000 \
+  --build-arg GROUP_ID=1000 \
+  --build-arg CACHE_DATE=$(date +%Y-%m-%d:%H:%M:%S) \
+  -t bpawnzz/agent-zero-run:development-v2 \
+  --platform linux/amd64,linux/arm64 \
+  --push .
+
+# Verify permissions after build:
+# docker exec agent-zero ls -ld /a0
+# docker exec agent-zero touch /a0/testfile
+
+# testing:
+docker buildx build --build-arg BRANCH=testing \
+  --build-arg USER_ID=1000 \
+  --build-arg GROUP_ID=1000 \
+  -t frdel/agent-zero-run:testing \
+  --platform linux/amd64,linux/arm64 \
+  --push --build-arg CACHE_DATE=$(date +%Y-%m-%d:%H:%M:%S) .
+
+# main
+docker buildx build --build-arg BRANCH=main \
+  --build-arg USER_ID=1000 \
+  --build-arg GROUP_ID=1000 \
+  -t frdel/agent-zero-run:latest \
+  --platform linux/amd64,linux/arm64 \
+  --push --build-arg CACHE_DATE=$(date +%Y-%m-%d:%H:%M:%S) .

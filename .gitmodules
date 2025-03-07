@@ -1,0 +1,3 @@
+[submodule "agent-zero"]
+    path = agent-zero
+	url = git@github.com:username/agent-zero.git

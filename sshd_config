@@ -1,0 +1,55 @@
+# Allow root login
+PermitRootLogin yes
+
+# Disable password authentication
+PasswordAuthentication no
+
+# Enable public key authentication
+PubkeyAuthentication yes
+
+# Specify the location of the authorized keys file
+AuthorizedKeysFile .ssh/authorized_keys
+
+# Disable other authentication methods
+ChallengeResponseAuthentication no
+UsePAM no
+
+# Allow only specific users (optional, if needed)
+# AllowUsers root
+
+# Set the SSH protocol version
+Protocol 2
+
+# Disable X11 forwarding
+X11Forwarding no
+
+# Disable TCP forwarding
+AllowTcpForwarding no
+
+# Disable agent forwarding
+AllowAgentForwarding no
+
+# Set the maximum number of authentication attempts
+MaxAuthTries 3
+
+# Set the maximum number of sessions
+MaxSessions 10
+
+# Set the login grace time
+LoginGraceTime 60
+
+# Set the banner (optional)
+# Banner /etc/issue.net
+
+# Logging
+SyslogFacility AUTH
+LogLevel INFO
+
+# Restrict access to specific IPs (optional)
+# AllowUsers root@192.168.1.0/24
+
+# Disable DNS resolution for faster connections
+UseDNS no
+
+# Set the port (default is 22, change if needed)
+# Port 22

@@ -1,0 +1,37 @@
+services:
+  agent-zero:
+    container_name: agent-zero
+    image: bpawnzz/agent-zero-run:development-v2
+    volumes:
+      - ./agent-zero:/a0
+      - ./work_dir:/home/agent/work
+      - ./agent_home:/home/agent
+      - ./sshd_config:/etc/ssh/sshd_config
+      - ./bashrc:/home/agent/.bashrc
+      - ./ssh:/home/agent/.ssh
+    ports:
+      - "50080:80"
+      - "2224:22"
+    user: "1000:1000"
+    tmpfs:
+      - /tmp
+      - /run
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - HOME=/home/agent
+      - SSH_ENABLE=true
+      - UMASK=0002
+    restart: unless-stopped
+    networks:
+      - caddy_default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.agent.entrypoints=websecure"
+      - "traefik.http.routers.agent.rule=Host(`agent.2damoon.xyz`)"
+      - "traefik.http.routers.agent.tls.certresolver=letsencrypt"
+      - "traefik.http.services.agent.loadbalancer.server.port=80"
+
+networks:
+  caddy_default:
+    external: true
