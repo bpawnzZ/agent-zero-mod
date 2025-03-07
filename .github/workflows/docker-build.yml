@@ -28,6 +28,9 @@ jobs:
       - name: Lowercase username
         run: echo "LOWER_USER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
 
+      - name: Print lowercase username
+        run: echo "Lowercase username is: $LOWER_USER"
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
