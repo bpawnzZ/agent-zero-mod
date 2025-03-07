@@ -39,10 +39,12 @@ jobs:
         id: date
         run: echo "CACHE_DATE=$(date +'%Y-%m-%d:%H:%M:%S')" >> $GITHUB_ENV
 
+      - name: Change working directory to repository root
+        run: cd ${{ github.workspace }}
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          working-directory: ${{ github.workspace }}
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
