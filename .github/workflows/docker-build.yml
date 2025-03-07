@@ -20,6 +20,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker-container
+
       - name: Lowercase username
         run: echo "LOWER_USER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
 
@@ -42,8 +47,10 @@ jobs:
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.LOWER_USER }}/${{ github.event.repository.name }}:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.LOWER_USER }}/${{ github.event.repository.name }}:latest
           build-args: |
             BRANCH=${{ github.ref_name }}
             USER_ID=1000
             GROUP_ID=1000
-            CACHE_DATE=${{ env.CACHE_DATE }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
