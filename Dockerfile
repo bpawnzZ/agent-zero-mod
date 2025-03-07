@@ -20,8 +20,7 @@ RUN mkdir -p /a0 && \
     chown -R agent:agent /a0 /exe /home/agent/.ssh && \
     find /a0 -type d -exec chmod 2775 {} + && \
     find /a0 -type f -exec chmod 0664 {} + && \
-    mkdir -p /exe && \
-    find /a0 -type f -exec chmod 0664 {} +
+    mkdir -p /exe
 
 # pre installation steps
 RUN bash /a0/fs/ins/pre_install.sh $BRANCH
